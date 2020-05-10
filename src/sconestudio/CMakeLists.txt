@@ -167,8 +167,10 @@ if(${Qt5Widgets_FOUND})
 		source_group("Resource Files" FILES ${RESOURCEFILES} )
 	
 		# Copy resources to bin folder
-		file(COPY "${CMAKE_SOURCE_DIR}/resources" DESTINATION "${CMAKE_BINARY_DIR}/resources")
-		#file(CREATE_LINK "${CMAKE_SOURCE_DIR}/resources" "${CMAKE_BINARY_DIR}/resources")
+#		file(CREATE_LINK "${CMAKE_SOURCE_DIR}/resources" "${CMAKE_BINARY_DIR}/resources")
+		file(TO_NATIVE_PATH "${CMAKE_SOURCE_DIR}/resources" RESOURCE_LINK_SOURCE)
+		file(TO_NATIVE_PATH "${CMAKE_BINARY_DIR}/resources" RESOURCE_LINK_TARGET)
+		add_custom_command(TARGET sconestudio POST_BUILD COMMAND mklink /D "${RESOURCE_LINK_TARGET}" "${RESOURCE_LINK_SOURCE}")
 		add_custom_command(TARGET sconestudio POST_BUILD
 			COMMAND ${CMAKE_COMMAND} -E copy_if_different "${CMAKE_SOURCE_DIR}/.version" ${CMAKE_BINARY_DIR}
 		)
